@@ -22,19 +22,16 @@ public class Application {
 	}
 
 	@RequestMapping(path = "/async", method = RequestMethod.GET)
-	public DeferredResult<String> getValueAsyncUsingCompletableFuture() {
+	public CompletableFuture<String> getValueAsyncUsingCompletableFuture() {
 
 	    log.info("Request received: {} : {}", Thread.currentThread().getId(), Thread.currentThread().getName());
 
-		final DeferredResult<String> deferredResult = new DeferredResult<>();
-
-		CompletableFuture
-            .supplyAsync(this::processRequest)
-            .whenCompleteAsync((result, throwable) -> deferredResult.setResult(result));
+        CompletableFuture<String> stringCompletableFuture = CompletableFuture
+                .supplyAsync(this::processRequest);
 
         log.info("Servlet thread released: {} : {}", Thread.currentThread().getId(), Thread.currentThread().getName());
 
-		return deferredResult;
+		return stringCompletableFuture;
 
 	}
 
