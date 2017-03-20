@@ -63,14 +63,14 @@ public class Application {
 	@RequestMapping(path = "/asyncCompletable", method = RequestMethod.GET)
 	public CompletableFuture<String> getValueAsyncUsingCompletableFuture() {
 
-	    log.info("Request received");
+        log.info("Request received");
 
         CompletableFuture<String> completableFuture
                 = CompletableFuture.supplyAsync(this::processRequest);
 
         log.info("Servlet thread released");
 
-		return completableFuture;
+        return completableFuture;
 
 	}
 
