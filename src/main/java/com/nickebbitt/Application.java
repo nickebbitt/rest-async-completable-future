@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 
 @SpringBootApplication
@@ -18,7 +16,7 @@ import java.util.concurrent.ForkJoinPool;
 @Slf4j
 public class Application {
 
-    public static final String RESULT = "Result";
+    static final String RESULT = "Result";
 
     public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -60,8 +58,8 @@ public class Application {
 
     }
 
-	@RequestMapping(path = "/asyncCompletable", method = RequestMethod.GET)
-	public CompletableFuture<String> getValueAsyncUsingCompletableFuture() {
+    @RequestMapping(path = "/asyncCompletable", method = RequestMethod.GET)
+    public CompletableFuture<String> getValueAsyncUsingCompletableFuture() {
 
         log.info("Request received");
 
@@ -72,6 +70,6 @@ public class Application {
 
         return completableFuture;
 
-	}
+    }
 
 }
