@@ -11,6 +11,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 
 @SpringBootApplication
 @RestController
@@ -26,9 +27,9 @@ public class Application {
     private String processRequest() {
         log.info("Start processing request");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         log.info("Completed processing request");
         return RESULT;
@@ -48,14 +49,14 @@ public class Application {
 
         log.info("Request received");
 
-        DeferredResult<String> stringDeferredResult = new DeferredResult<>();
+        DeferredResult<String> deferredResult = new DeferredResult<>();
 
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
-        executorService.submit(() -> stringDeferredResult.setResult(processRequest()));
+        ForkJoinPool.commonPool()
+                .submit(() -> deferredResult.setResult(processRequest()));
 
         log.info("Servlet thread released");
 
-        return stringDeferredResult;
+        return deferredResult;
 
     }
 
@@ -64,12 +65,12 @@ public class Application {
 
 	    log.info("Request received");
 
-        CompletableFuture<String> stringCompletableFuture = CompletableFuture
-                .supplyAsync(this::processRequest);
+        CompletableFuture<String> completableFuture
+                = CompletableFuture.supplyAsync(this::processRequest);
 
         log.info("Servlet thread released");
 
-		return stringCompletableFuture;
+		return completableFuture;
 
 	}
 
