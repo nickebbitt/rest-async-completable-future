@@ -72,4 +72,13 @@ public class Application {
 
     }
 
+    @RequestMapping(path = "/asyncCompletableComposed", method = RequestMethod.GET)
+    public CompletableFuture<String> getValueAsyncUsingCompletableFutureComposed() {
+
+        return CompletableFuture
+                .supplyAsync(this::processRequest)
+                .thenApplyAsync(r -> new StringBuilder(r).reverse().toString());
+
+    }
+
 }

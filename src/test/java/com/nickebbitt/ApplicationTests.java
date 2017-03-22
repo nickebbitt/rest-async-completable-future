@@ -16,6 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 public class ApplicationTests {
 
+	private static final String RESULT_REVERSED = new StringBuffer(RESULT).reverse().toString();
+
 	@Autowired
 	private TestRestTemplate restTemplate;
 
@@ -55,6 +57,19 @@ public class ApplicationTests {
 		log.info("After request");
 
 		assertThat(result).isEqualTo(RESULT);
+
+	}
+
+	@Test
+	public void asyncEndpointShouldReturnReversedStringWithCompletableFuture() {
+
+		log.info("Before request");
+
+		final String result = restTemplate.getForObject("/asyncCompletableComposed", String.class);
+
+		log.info("After request");
+
+		assertThat(result).isEqualTo(RESULT_REVERSED);
 
 	}
 
