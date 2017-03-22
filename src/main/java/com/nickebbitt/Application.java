@@ -33,6 +33,13 @@ public class Application {
         return RESULT;
     }
 
+    private String reverseString(String s) {
+        log.info("Start reversing string");
+        String reversed = new StringBuilder(s).reverse().toString();
+        log.info("Completed reversing string");
+        return reversed;
+    }
+
     @RequestMapping(path = "/sync", method = RequestMethod.GET)
     public String getValueSync() {
 
@@ -77,7 +84,7 @@ public class Application {
 
         return CompletableFuture
                 .supplyAsync(this::processRequest)
-                .thenApplyAsync(r -> new StringBuilder(r).reverse().toString());
+                .thenApplyAsync(this::reverseString);
 
     }
 
